@@ -1,5 +1,5 @@
 /**
- * initializer — adds `/init` to pi.
+ * initializer — adds `/init` and automatic project discovery to pi.
  *
  * Two branches, chosen programmatically by looking for AGENTS.md in the
  * project root:
@@ -21,6 +21,7 @@ import type {
 } from "@earendil-works/pi-coding-agent";
 import { Box, Text } from "@earendil-works/pi-tui";
 import { completeMode, parseMode } from "./src/args.ts";
+import { registerDiscovery } from "./src/discovery.ts";
 import {
 	findAgentsFile,
 	projectName,
@@ -58,6 +59,8 @@ function makeVars(cwd: string, existing: AgentsFile | null): PromptVars {
 }
 
 export default function (pi: ExtensionAPI) {
+	registerDiscovery(pi);
+
 	/**
 	 * Collapsed, the queued context is a single line — the point of /init on an
 	 * existing project is that the agent gets the file, not that the user

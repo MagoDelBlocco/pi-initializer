@@ -1,7 +1,7 @@
 {
   "name": "pi-initializer",
   "version": "0.1.0",
-  "description": "Adds /init to pi — writes an AGENTS.md for the project, or loads the existing one into context for the next message.",
+  "description": "Adds /init and a compact first-turn project overview to pi.",
   "private": true,
   "type": "module",
   "pi": {
@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "test": "tsx --test tests/*.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

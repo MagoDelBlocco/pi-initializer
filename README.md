@@ -1,8 +1,21 @@
 # pi-initializer
 
-A [pi](https://github.com/earendil-works/pi-coding-agent) extension that adds the `/init` command:
-write an `AGENTS.md` for the project you are in, or — if one already exists — load it into
-context for your next message.
+A [pi](https://github.com/earendil-works/pi-coding-agent) extension that gives a fresh session
+a compact project overview and adds the `/init` command: write an `AGENTS.md` for the project
+you are in, or — if one already exists — load it into context for your next message.
+
+## Automatic discovery
+
+At the start of a fresh session, initializer scans the project and injects one compact overview
+before the first agent turn. It includes the project name, leading languages, branch, build and
+CI commands, infrastructure markers, and agent instruction files when available. Resumed
+sessions skip this step. The overview has a default budget of 1,200 tokens.
+
+`/discovery` shows the overview; `/discovery regen` regenerates it and injects the new version
+on the next turn. `DISCOVERY_BUDGET`, `DISCOVERY_PASS1=false`, and comma-separated
+`DISCOVERY_IGNORE` retain their existing meanings. Ignore entries can name a file, a directory,
+or a path relative to the project root, and apply to Git and non-Git projects. Setting
+`DISCOVERY_PASS1=false` disables the overview.
 
 ## What `/init` does
 
@@ -115,9 +128,9 @@ npm test        # node:test via tsx
 npm run typecheck
 ```
 
-The pure logic — prompt parsing, `AGENTS.md` discovery, argument parsing — lives in `src/` free
-of `pi-tui` / `pi-coding-agent` imports, so it is testable outside pi's module loader.
-`index.ts` holds only the wiring.
+The pure `/init` logic — prompt parsing, `AGENTS.md` lookup, and argument parsing — lives in
+`src/` free of `pi-tui` / `pi-coding-agent` imports. Automatic project discovery lives in
+`src/discovery.ts`; `index.ts` registers it alongside `/init`.
 
 ## License
 
